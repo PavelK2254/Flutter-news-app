@@ -1,3 +1,5 @@
+# Flutter-news-app
+White label application for news
 # flutter_app
 
 White label flutter news application
