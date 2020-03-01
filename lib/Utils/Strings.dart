@@ -1,0 +1,4 @@
+class Strings {
+  static const TEST_TITLE_HEADLINE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultricies sapien. Donec lobortis orci leo, vel accumsan magna rutrum mollis. Suspendisse vitae maximus augue, ut placerat magna";
+  static const TEST_CONTENT_HEADLINE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultricies sapien. Donec lobortis orci leo, vel accumsan magna rutrum mollis. Suspendisse vitae maximus augue, ut placerat magna. Aliquam sit amet diam non turpis pharetra mattis vitae vehicula ligula. Quisque non mattis nisl, non maximus libero. Aenean molestie pretium tortor. Suspendisse eu blandit orci. Sed nulla arcu, mollis non posuere ut, scelerisque vitae nisi. Cras faucibus sagittis massa eget mattis. Phasellus faucibus orci at ex scelerisque, nec egestas sapien finibus.";
+}

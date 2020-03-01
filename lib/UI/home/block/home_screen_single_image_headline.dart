@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Utils/API.dart';
 
-class SingleImageHeadline extends StatelessWidget{
+class SingleImageHeadline extends StatelessWidget {
+
+  var title,subtitle,imageUrl;
+
+  SingleImageHeadline(this.title, this.subtitle, this.imageUrl);
+
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
     return Center(
       child: Card(
+        margin: EdgeInsets.only(top: 4.0,bottom: 4.0),
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
@@ -15,17 +23,29 @@ class SingleImageHeadline extends StatelessWidget{
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Image.asset("assets/images/noImage.jpeg"),
+               // child: Image.asset("assets/images/noImage.jpeg"),
+                  child: Image.network(API.BASE_URL +imageUrl)
               ),
-              const ListTile(
-                title: Text('The Enchanted Nightingale'),
-                subtitle: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra libero turpis. Phasellus cursus nisi non iaculis efficitur. Vestibulum tincidunt sed est vel rhoncus. Etiam lacinia mollis imperdiet. Fusce euismod urna sit amet nisl tempus faucibus. Nullam pulvinar libero libero, eget congue risus interdum nec. Fusce suscipit vel augue fringilla mollis. Etiam et aliquam nisi, vel efficitur diam. Curabitur ut egestas leo, vitae lacinia erat. Nunc quis est velit. Sed blandit risus nec lacinia placerat."),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  title,
+                  style: textTheme.headline6,
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              Text(
+                subtitle,
+                style: textTheme.subtitle1,
+                maxLines: 6,
+                overflow: TextOverflow.ellipsis,
+              )
             ],
           ),
         ),
       ),
     );
   }
-
 }

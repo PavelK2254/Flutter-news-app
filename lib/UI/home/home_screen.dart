@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Model/headline.dart';
+import 'package:flutter_app/UI/home/VM/home_screen_vm.dart';
 import 'package:flutter_app/UI/home/block/home_screen_regular_block.dart';
 import 'package:flutter_app/UI/home/block/home_screen_single_image_headline.dart';
+import 'package:flutter_app/Utils/Integers.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -17,11 +20,17 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage> {
+  final localViewModel = new HomePageVM();
+
+  Future<void> refreshPage() async {
+    setState(() {});
+  }
+
+  _HomePageState();
 
   void _incrementCounter() {
     setState(() {
@@ -30,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      localViewModel.getHeadlines();
     });
   }
 
@@ -51,37 +60,39 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Container(
-          padding: EdgeInsets.all(8.0),
-          child: ListView(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-
-
-            children: <Widget>[/*
-              Text(
-                'You have clicked the button this many times:',
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
-              ),*/
-              SingleImageHeadline(),
-              RegularBlock(),
-              SingleImageHeadline()
-            ],
+        child: RefreshIndicator(
+          onRefresh: refreshPage,
+          child: Container(
+            padding: EdgeInsets.only(
+                left: Integers.DEFAULT_PADDING,
+                right: Integers.DEFAULT_PADDING,
+                top: Integers.DEFAULT_PADDING * 2,
+                bottom: Integers.DEFAULT_PADDING),
+            child: FutureBuilder(
+              future: localViewModel.getHeadlines(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Headline> headlines = snapshot.data;
+                  return ListView.builder(
+                      itemCount: headlines.length,
+                      itemBuilder: (context, index) {
+                        Headline headline = headlines[index];
+                        if (headline.avatar != null) {
+                          return SingleImageHeadline(headline.title,
+                              headline.subtitle, headline.avatar.url);
+                        }
+                        return Container(
+                            margin: EdgeInsets.only(
+                                top: Integers.DEFAULT_PADDING,
+                                bottom: Integers.DEFAULT_PADDING),
+                            child: RegularBlock(
+                                headline.title, headline.subtitle));
+                      });
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
           ),
         ),
       ),
