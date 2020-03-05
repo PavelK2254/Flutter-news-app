@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Model/headline.dart';
 import 'package:flutter_app/UI/home/VM/home_screen_vm.dart';
+import 'package:flutter_app/UI/home/block/home_screen_main_headline.dart';
 import 'package:flutter_app/UI/home/block/home_screen_regular_block.dart';
 import 'package:flutter_app/UI/home/block/home_screen_single_image_headline.dart';
 import 'package:flutter_app/Utils/Integers.dart';
+import 'package:flutter_app/Utils/Parsers.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -64,10 +66,11 @@ class _HomePageState extends State<HomePage> {
           onRefresh: refreshPage,
           child: Container(
             padding: EdgeInsets.only(
-                left: Integers.DEFAULT_PADDING,
-                right: Integers.DEFAULT_PADDING,
-                top: Integers.DEFAULT_PADDING * 2,
-                bottom: Integers.DEFAULT_PADDING),
+               // left: Integers.DEFAULT_PADDING,
+                //right: Integers.DEFAULT_PADDING,
+                //top: Integers.DEFAULT_PADDING * 2,
+               // bottom: Integers.DEFAULT_PADDING
+            ),
             child: FutureBuilder(
               future: localViewModel.getHeadlines(),
               builder: (context, snapshot) {
@@ -76,10 +79,19 @@ class _HomePageState extends State<HomePage> {
                   return ListView.builder(
                       itemCount: headlines.length,
                       itemBuilder: (context, index) {
-                        Headline headline = headlines[index];
+                        Headline headline =
+                            headlines[(headlines.length - 1) - index];
                         if (headline.avatar != null) {
-                          return SingleImageHeadline(headline.title,
-                              headline.subtitle, headline.avatar.url);
+                          if (index == 0) {
+                            return MainHeadline(headline.avatar.url,headline.title);
+                          } else {
+                            return SingleImageHeadline(
+                                headline.title,
+                                headline.subtitle,
+                                headline.avatar.url,
+                                new DateManager(headline.updatedAt)
+                                    .getFormattedDate());
+                          }
                         }
                         return Container(
                             margin: EdgeInsets.only(
@@ -96,11 +108,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
