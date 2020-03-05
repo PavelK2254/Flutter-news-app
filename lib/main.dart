@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,backgroundColor: Colors.grey
       ),
       home: HomePage(title: 'News Application'),
+
     );
   }
 }

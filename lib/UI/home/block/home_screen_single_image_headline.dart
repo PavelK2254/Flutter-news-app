@@ -48,11 +48,15 @@ class SingleImageHeadline extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Text(
-                subtitle,
-                style: textTheme.bodyText2,
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  subtitle,
+                  textAlign: TextAlign.start,
+                  style: textTheme.bodyText2,
+                  maxLines: 6,
+                  overflow: TextOverflow.ellipsis,
+                ),
               )
             ],
           ),

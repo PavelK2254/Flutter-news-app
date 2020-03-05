@@ -59,6 +59,35 @@ class _HomePageState extends State<HomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text("Drawer header"),
+              decoration: BoxDecoration(color: Colors.blue),
+            ),
+            ListTile(
+              title: Text("Option 1"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("Option 2"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("Option 3"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -66,11 +95,11 @@ class _HomePageState extends State<HomePage> {
           onRefresh: refreshPage,
           child: Container(
             padding: EdgeInsets.only(
-               // left: Integers.DEFAULT_PADDING,
+                // left: Integers.DEFAULT_PADDING,
                 //right: Integers.DEFAULT_PADDING,
                 //top: Integers.DEFAULT_PADDING * 2,
-               // bottom: Integers.DEFAULT_PADDING
-            ),
+                // bottom: Integers.DEFAULT_PADDING
+                ),
             child: FutureBuilder(
               future: localViewModel.getHeadlines(),
               builder: (context, snapshot) {
@@ -83,7 +112,8 @@ class _HomePageState extends State<HomePage> {
                             headlines[(headlines.length - 1) - index];
                         if (headline.avatar != null) {
                           if (index == 0) {
-                            return MainHeadline(headline.avatar.url,headline.title);
+                            return MainHeadline(
+                                headline.avatar.url, headline.title);
                           } else {
                             return SingleImageHeadline(
                                 headline.title,
@@ -107,6 +137,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.business), title: Text("Business")),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.school), title: Text("School"))
+        ],
+        currentIndex: 1,
+        selectedItemColor: Colors.red[800],
       ),
     );
   }
